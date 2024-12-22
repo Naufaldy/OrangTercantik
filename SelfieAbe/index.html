@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CANTIK BANGET</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFB6C1; /* Pink background */
+        }
+        video, canvas {
+            border: 2px solid #333;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        button, a {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+        button:hover, a:hover {
+            background-color: #0056b3;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        #message {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lu Mau Lihat Orang Tercantik Ga?</h1>
+    <p id="message">kalo g percaya, klik aja tombol yg dibawah</p>
+    <video id="video" autoplay></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <div>
+        <button id="capture">jangan kaget secantik apa</button>
+        <a id="download" style="display:none;">kirim bukti</a>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureButton = document.getElementById('capture');
+        const downloadButton = document.getElementById('download');
+        const message = document.getElementById('message');
+
+        // Access the user's webcam
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error('Error accessing the webcam', error);
+            });
+
+        // Capture the photo
+        captureButton.addEventListener('click', () => {
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            canvas.style.display = 'block';
+            downloadButton.style.display = 'inline-block';
+
+            // Prepare the image for download
+            const imageData = canvas.toDataURL('image/png');
+            downloadButton.href = imageData;
+            downloadButton.download = 'bidadari.png';
+
+            // Update message
+            message.textContent = 'Tuh kan, beneran orang tercantik! Simpen fotonya biar makin yakin.';
+        });
+    </script>
+</body>
+</html>
